@@ -1,0 +1,275 @@
+body {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 10px;
+    background-image: url("./images/bg-mobile-dark.jpg");
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: contain;
+    margin: 0px;
+    padding: 0px;
+    background-color: hsl(235, 21%, 11%);
+}
+
+#main-flex {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 1.5rem;
+}
+
+#title-flex {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0rem;
+}
+
+h1 {
+    color: hsl(0, 0%, 98%);
+    text-transform: uppercase;
+    letter-spacing: 1rem;
+    font-size: 1.8rem;
+}
+
+#color-toggle {
+    width: 1.5rem;
+}
+
+#input-text-container {
+    display: block;
+    position: relative;
+    padding: 1.5rem 2rem 1.5rem 4rem;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: hsl(235, 24%, 19%);
+    border-radius: 5px 5px 5px 5px;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    min-height: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+#input-text {
+    background-color: hsl(235, 24%, 19%);
+    box-sizing: border-box;
+    outline-style: solid;
+    outline-color: hsl(235, 24%, 19%);
+    font-family: 'Josefin Sans', sans-serif;
+    border: none;
+    color: hsl(234, 39%, 85%);
+    caret-color: #5786b5;
+    font-size: 1rem;
+    width: 100%;
+}
+
+#input-check {
+    background-color: hsl(235, 24%, 19%);
+}
+
+#todo-list-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.checkbox-container:nth-of-type(1) {
+    border-radius: 5px 5px 0px 0px;
+}
+
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding: 1.5rem 3rem 1.5rem 4rem;
+    margin-bottom: 0px;
+    border-bottom: 1.5px solid hsl(233, 14%, 35%);
+    min-height: 4rem;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 1rem;
+    overflow-wrap: break-word;
+    background-color: hsl(235, 24%, 19%);
+    color: hsl(234, 39%, 85%);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+
+.checkmark {
+    position: absolute;
+    top: 1.1rem;
+    left: 1rem;
+    height: 25px;
+    width: 25px;
+    border: 1.5px solid hsl(233, 14%, 35%);
+    border-radius: 50%;
+    background-color: hsl(235, 24%, 19%);
+}
+
+.remove {
+    position: absolute;
+    top: 1.5rem;
+    right: 1rem;
+    height: 20px;
+    width: 20px;
+}
+
+/* On mouse-over, add a grey background color */
+
+.checkbox-container:hover input~.checkmark {}
+
+/* When the checkbox is checked, add a gradient background */
+
+.checkbox-container input:checked~.checkmark {
+    border: none;
+    background-image: linear-gradient(to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+
+.checkbox-container input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+
+.checkbox-container .checkmark:after {
+    left: 10px;
+    top: 7px;
+    width: 3px;
+    height: 8px;
+    border: solid hsl(0, 0%, 98%);
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+#below-todo-box {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 1rem;
+    padding-right:0.3rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(235, 24%, 19%);
+    border-radius: 0px 0px 5px 5px;
+}
+
+.below-text {
+    font-size: 1rem;
+    color: hsl(233, 14%, 35%);
+    background-color: hsl(235, 24%, 19%);
+    border: none;
+}
+
+#clear-completed-button:hover, .toggle-view-button:hover {
+    color: hsl(234, 39%, 85%);
+}
+
+#toggle-button-container {
+    display: flex;
+    flex-direction: row;
+    background-color: hsl(235, 24%, 19%);
+    justify-content: center;
+    margin-top: 1rem;
+    height: 3rem;
+}
+
+.toggle-view-button {
+    color: hsl(234, 11%, 52%);
+    background-color: hsl(235, 24%, 19%);
+    border: none;
+    font-weight: 700;
+    padding: 1rem;
+}
+
+#instructions {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: hsl(234, 11%, 52%);
+}
+
+@media only screen and (min-width: 768px) {
+    body {
+        font-size: 18px;
+        background-image: url("./images/bg-desktop-dark.jpg");
+    }
+    #main-flex {
+        min-width: 33rem;
+        width: 38%;
+        margin: 3rem auto;
+    }
+    #title-flex {
+        margin-bottom: 1rem;
+    }
+    h1 {
+        font-size: 2.5rem;
+    }
+    #input-text-container {
+        margin-bottom: 1.5rem;
+    }
+    #toggle-button-container {
+        position: relative;
+        bottom:4rem;
+        align-self:center;
+    }
+}
+
+.primary-colors {
+    background-color: hsl(220, 98%, 61%);
+    background: linear-gradient(to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+}
+
+.light-theme {
+    background-color: hsl(0, 0%, 98%);
+    background-color: hsl(236, 33%, 92%);
+    background-color: hsl(233, 11%, 84%);
+    background-color: hsl(236, 9%, 61%);
+    background-color: hsl(235, 19%, 35%);
+}
+
+.dark-theme {
+    background-color: hsl(235, 21%, 11%);
+    background-color: hsl(235, 24%, 19%);
+    background-color: hsl(234, 39%, 85%);
+    background-color: hsl(235, 12%, 38%);
+    background-color: hsl(234, 11%, 52%);
+    background-color: hsl(233, 14%, 35%);
+    background-color: hsl(237, 14%, 26%);
+}
+
+.attribution {
+    font-size: 11px;
+    text-align: center;
+}
+
+.attribution a {
+    color: hsl(228, 45%, 44%);
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- displays site properly based on user's device -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- icon for title -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <!-- fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <!-- stylesheets -->
+  <link rel="stylesheet" href="app.css">
+  <title>Frontend Mentor | Todo app</title>
+
+</head>
+
+<body>
+  <main>
+    <div id="main-flex">
+      <div id="title-flex">
+        <h1>Todo</h1>
+        <img id="color-toggle" src="images/icon-sun.svg"></img>
+      </div>
+      <div id="input-text-container">
+        <input type="text" id="input-text" placeholder="Create a new todo...">
+        <span class="checkmark" id="input-check"></span>
+      </div>
+      </label>
+      <div id="todo-list-box">
+        <label class="checkbox-container">Complete online Javascript course
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          <img class="remove" src="images/icon-cross.svg"></img>
+        </label>
+        <label class="checkbox-container">Jog around the park 3x
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          <img class="remove" src="images/icon-cross.svg"></img>
+        </label>
+        <label class="checkbox-container">Ten minutes meditation
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          <img class="remove" src="images/icon-cross.svg"></img>
+        </label>
+        <label class="checkbox-container">Read for 1 hour
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          <img class="remove" src="images/icon-cross.svg"></img>
+        </label>
+        <label class="checkbox-container">Pick up groceries
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          <img class="remove" src="images/icon-cross.svg"></img>
+        </label>
+        <label class="checkbox-container">Complete Todo app on Front End Mentor
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          <img class="remove" src="images/icon-cross.svg"></img>
+        </label>
+      </div>
+      <div id="below-todo-box">
+        <p class="below-text" id="items-left">6 items left</p>
+        <button class="below-text" id="clear-completed-button"> Clear Completed</button>
+      </div>
+      <div id="toggle-button-container">
+        <button class="toggle-view-button" value="off">All</button>
+        <button class="toggle-view-button" value="off">Active </button>
+        <button class="toggle-view-button" value="off">Completed</button>
+      </div>
+      <p id="instructions">Drag and drop to reorder list</p>
+    </div>
+  </main>
+  <footer class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">James Gisele</a>.
+  </footer>
+</body>
+<script src="app.js"></script>
+
+</html>
