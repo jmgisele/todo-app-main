@@ -155,18 +155,6 @@ function toggleButton() {
             toggleButtons[i].addEventListener("mouseout", function () {
                 this.style.color = "hsl(234, 11%, 52%)";
             });
-
-
-
-
-
-
-
-
-
-
-
-
         }
     }
 };
