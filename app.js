@@ -107,7 +107,7 @@ function newCheckboxTodo(value) {
     newItem.innerHTML = `${value}
             <input type="checkbox">
             <span class="checkmark"></span>
-            <img class="remove" src="images/icon-cross.svg"></img>
+            <img class="remove" src="images/icon-cross.svg" alt=""></img>
         `;
     todoBox.prepend(newItem);
     removeButtonsList.all[0].addEventListener("click", function (click) {
