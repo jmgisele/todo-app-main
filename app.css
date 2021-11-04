@@ -1,14 +1,30 @@
 body {
+    --background: hsl(235, 21%, 11%);
+    --foreground: hsl(234, 39%, 85%);
+    --top-image: url("./images/bg-mobile-dark.jpg");
+    --toggle-button: url("./images/icon-sun.svg");
+    --background-todo: hsl(235, 24%, 19%);
+}
+
+.light-theme {
+    --background: hsl(236, 33%, 92%);
+    --foreground: hsl(237, 14%, 26%);
+    --top-image: url("./images/bg-mobile-light.jpg");
+    --toggle-button: url("./images/icon-moon.svg");
+    --background-todo: hsl(0, 0%, 98%);
+}
+
+body {
     font-family: 'Josefin Sans', sans-serif;
     font-size: 10px;
-    background-image: url("./images/bg-mobile-dark.jpg");
+    background-image: var(--top-image);
     background-position: top;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: contain;
     margin: 0px;
     padding: 0px;
-    background-color: hsl(235, 21%, 11%);
+    background-color: var(--background);
 }
 
 #main-flex {
@@ -43,7 +59,7 @@ h1 {
     padding: 1.5rem 2rem 1.5rem 4rem;
     cursor: pointer;
     font-size: 1rem;
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
     border-radius: 5px 5px 5px 5px;
     overflow-wrap: break-word;
     box-sizing: border-box;
@@ -52,20 +68,20 @@ h1 {
 }
 
 #input-text {
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
     box-sizing: border-box;
     outline-style: solid;
-    outline-color: hsl(235, 24%, 19%);
+    outline-color: var(--background-todo);
     font-family: 'Josefin Sans', sans-serif;
     border: none;
-    color: hsl(234, 39%, 85%);
+    color: var(--foreground);
     caret-color: #5786b5;
     font-size: 1rem;
     width: 100%;
 }
 
 #input-check {
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
 }
 
 #todo-list-box {
@@ -89,8 +105,8 @@ h1 {
     cursor: pointer;
     font-size: 1rem;
     overflow-wrap: break-word;
-    background-color: hsl(235, 24%, 19%);
-    color: hsl(234, 39%, 85%);
+    background-color: var(--background-todo);
+    color: var(--foreground);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -117,7 +133,7 @@ h1 {
     width: 25px;
     border: 1.5px solid hsl(233, 14%, 35%);
     border-radius: 50%;
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
 }
 
 .remove {
@@ -128,9 +144,45 @@ h1 {
     width: 20px;
 }
 
-/* On mouse-over, add a grey background color */
+/* On hover, add gradient outline */
 
-.checkbox-container:hover input~.checkmark {}
+.checkbox-container:hover input~.checkmark {
+    border: none;
+    background-image: linear-gradient(hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+}
+
+/* Create the hover circle (hidden when not hovering) */
+
+.checkmark::before {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show hover circle when hovering */
+
+.checkbox-container:hover input:not(:checked)~.checkmark::before {
+    display: block;
+}
+
+/* Style the hover */
+
+.checkbox-container .checkmark::before {
+    height: 22px;
+    width: 22px;
+    top: 1.8px;
+    left: 1.8px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--background-todo);
+    /* background-color:white; */
+}
+
+/* Show the checkmark when checked */
+
+.checkbox-container input:checked~.checkmark:after {
+    display: block;
+}
 
 /* When the checkbox is checked, add a gradient background */
 
@@ -172,29 +224,29 @@ h1 {
     width: 100%;
     box-sizing: border-box;
     padding: 0px 1rem;
-    padding-right:0.3rem;
+    padding-right: 0.3rem;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
     border-radius: 0px 0px 5px 5px;
 }
 
 .below-text {
     font-size: 1rem;
     color: hsl(233, 14%, 35%);
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
     border: none;
 }
 
 #clear-completed-button:hover, .toggle-view-button:hover {
-    color: hsl(234, 39%, 85%);
+    color: var(--foreground);
 }
 
 #toggle-button-container {
     display: flex;
     flex-direction: row;
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
     justify-content: center;
     margin-top: 1rem;
     height: 3rem;
@@ -202,7 +254,7 @@ h1 {
 
 .toggle-view-button {
     color: hsl(234, 11%, 52%);
-    background-color: hsl(235, 24%, 19%);
+    background-color: var(--background-todo);
     border: none;
     font-weight: 700;
     padding: 1rem;
@@ -237,8 +289,8 @@ h1 {
     }
     #toggle-button-container {
         position: relative;
-        bottom:4rem;
-        align-self:center;
+        bottom: 4rem;
+        align-self: center;
     }
 }
 
@@ -247,7 +299,7 @@ h1 {
     background: linear-gradient(to bottom right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
 }
 
-.light-theme {
+.light-theme-colors {
     background-color: hsl(0, 0%, 98%);
     background-color: hsl(236, 33%, 92%);
     background-color: hsl(233, 11%, 84%);
@@ -268,6 +320,7 @@ h1 {
 .attribution {
     font-size: 11px;
     text-align: center;
+    color:var(--foreground);
 }
 
 .attribution a {

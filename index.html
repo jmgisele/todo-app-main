@@ -13,6 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
   <!-- stylesheets -->
   <link rel="stylesheet" href="app.css">
+  <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <!-- title-->
   <title>Frontend Mentor | Todo app</title>
 
 </head>
@@ -30,32 +33,32 @@
       </div>
       </label>
       <div id="todo-list-box">
-        <label class="checkbox-container">Complete online Javascript course
+        <label class="checkbox-container" id="item1">Complete online Javascript course
           <input type="checkbox">
           <span class="checkmark"></span>
           <img class="remove" src="images/icon-cross.svg"></img>
         </label>
-        <label class="checkbox-container">Jog around the park 3x
+        <label class="checkbox-container" id="item2">Jog around the park 3x
           <input type="checkbox">
           <span class="checkmark"></span>
           <img class="remove" src="images/icon-cross.svg"></img>
         </label>
-        <label class="checkbox-container">Ten minutes meditation
+        <label class="checkbox-container" id="item3">Ten minutes meditation
           <input type="checkbox">
           <span class="checkmark"></span>
           <img class="remove" src="images/icon-cross.svg"></img>
         </label>
-        <label class="checkbox-container">Read for 1 hour
+        <label class="checkbox-container" id="item4">Read for 1 hour
           <input type="checkbox">
           <span class="checkmark"></span>
           <img class="remove" src="images/icon-cross.svg"></img>
         </label>
-        <label class="checkbox-container">Pick up groceries
+        <label class="checkbox-container" id="item5">Pick up groceries
           <input type="checkbox">
           <span class="checkmark"></span>
           <img class="remove" src="images/icon-cross.svg"></img>
         </label>
-        <label class="checkbox-container">Complete Todo app on Front End Mentor
+        <label class="checkbox-container" id="item6">Complete Todo app on Front End Mentor
           <input type="checkbox">
           <span class="checkmark"></span>
           <img class="remove" src="images/icon-cross.svg"></img>
@@ -73,11 +76,12 @@
       <p id="instructions">Drag and drop to reorder list</p>
     </div>
   </main>
-  <footer class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
-    Coded by <a href="#">James Gisele</a>.
-  </footer>
+
 </body>
+<footer class="attribution">
+  Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+  Coded by <a href="https://github.com/jmgisele">James Gisele</a>.
+</footer>
 <script src="app.js"></script>
 
 </html>
