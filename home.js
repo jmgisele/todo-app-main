@@ -19,59 +19,35 @@ let db;
 //////////On Load Events////////
 
 window.onload = () => {
-    //when window reloads, make sure all the "checked" inputs remain crossed through
-    todoCheckedInputs().forEach(input => {
-        input.parentElement.style.textDecoration = "line-through";
-        input.parentElement.style.color = "hsl(234, 11%, 52%)";
-        itemsLeft();
-    });
-
     //calcs items left unchecked
     itemsLeft();
 
+    //create and seed database
+    createDB();
 
-    //adding event handlers 
-    removeButtonsList().forEach((button) =>
-        button.addEventListener("click", (e) => {
-            e.target.parentElement.remove()
-            itemsLeft()
-        }))
+    //when form is submitted, content is added to DB
+    submitForm.onsubmit = addData;
+};
 
-    todoAllInputs().forEach(input => input.addEventListener("change", crossThrough));
 
-    todoInput.addEventListener("keyup", (e) => {
-        if ((e.key === "Enter" || e.keyCode === 13) && e.target.value.length > 0) {
-            newCheckboxTodo(e.target.value);
-            todoInput.value = "";
+
+//////////// Callbacks ////////////
+let createDB = async () => {
+    //creating DB
+    const dbName = 'todos_db';
+    const storeName = 'todos';
+    const version = 1;
+
+    db = await idb.openDB(dbName, version, {
+        upgrade(db, oldVersion, newVersion, transaction) {
+            const store = db.createObjectStore(storeName, { autoIncrement: true })
         }
     });
 
-
-
-
-    //creating + opening client side database
-    let request = indexedDB.open('todo_db', 1)
-    request.onerror = () => console.log('Database failed to open');
-    request.onsuccess = () => {
-        console.log('Database open!')
-        db = request.result;
-    }
-
-    //if this is the first time page has been loaded
-    //or database needs upgrade, initialize + re-seed
-    request.onupgradeneeded = (e) => {
-        let db = e.target.result;
-
-        //creating objectStore 
-        let objectStore = db.createObjectStore('todos_os', { keyPath: 'id', autoIncrement: true });
-
-        //schema
-        objectStore.createIndex('body', 'body', { unique: false });
-        objectStore.createIndex('isChecked', 'isChecked', { unique: false });
-
-        console.log('Database has been made!')
-
-        //populating with initial values 
+    //putting initial values in if none are there on load as placeholder
+    const initial_items = await db.transaction(storeName).objectStore(storeName).getAll();
+    console.log(initial_items)
+    if (initial_items.length === 0) { //initial seed
         let initial_todos = [
             "Complete online Javascript course",
             "Jog around the park 3x",
@@ -80,74 +56,65 @@ window.onload = () => {
             "Pick up groceries",
             "Complete Todo app on Front End Mentor"
         ]
-        // for (let entry of initial_todos) {
-        //     let newItem = { body: entry, isChecked: false };
-        //     let transaction = db.transaction(['todos_os'], 'readwrite');
-        //     let objectStore = transaction.objectStore('todos_os');
-        //     let request = objectStore.add(newItem);
-        //     request.onsuccess = () => console.log('added item')
-        //     transaction.oncomplete = () => {
-        //         displayNewItem(newItem);
-        //     };
-        // }
+        for (let entry of initial_todos) {
+            let transaction = db.transaction('todos', 'readwrite')
+            let store = await transaction.objectStore('todos')
+            let newEntry = { body: entry, isChecked: false };
+            let placed_val = await store.put(newEntry);
 
-
+            await transaction.done
+        }
+    } else { //refresh!
+        for (let item of initial_items) {
+            displayNewItem(item)
+        }
     }
-
-    //writing to client side database for initial view
-
-    //when form is submitted, content is added to DB
-    submitForm.onsubmit = addData;
-
-};
-
-
-
-//////////// Callbacks ////////////
-
-
-let addData = (e) => {
-    e.preventDefault(); //no http thx!
-
-    let newItem = { body: todoInput.value, isChecked: false };
-
-    let transaction = db.transaction(['todos_os'], 'readwrite');
-    let objectStore = transaction.objectStore('todos_os');
-    let request = objectStore.add(newItem);
-    request.onsuccess = () => { todoInput.value = ''; }; //clear form
-
-    transaction.oncomplete = () => {
-        console.log('Transaction completed: database modification finished.');
-        displayNewItem(newItem);
-    };
-
-    transaction.onerror = () => { console.log('Transaction not opened due to error'); };
 }
 
-//would be more performant to batch initial DOM updates
-//but this is a literal todo list app with 6 initial items
-//so this is used for initial render + subsequent updates both
+//adds todo to database
+let addData = async (e) => {
+    e.preventDefault(); //no http thx!
+    let newItem = { body: todoInput.value, isChecked: false };
 
-let idNumber = todoAllInputs().length; //is always incremented by one so todo items have unique ids
+    let transaction = db.transaction('todos', 'readwrite');
+    let store = await transaction.objectStore('todos');
+
+    const placed_val = await store.put(newItem);
+    await transaction.done;
+    displayNewItem(newItem);
+    e.originalTarget[0].value = ""
+}
+
+//deletes item from database and removes it from the DOM 
+function removeData(e) {
+}
+
+//displays new todo at top of list
 let displayNewItem = (data) => {
     let value = data.body;
     const newItem = document.createElement("label");
     newItem.classList.add("checkbox-container");
-    idNumber++;
-    newItem.id = `item${idNumber}`
     newItem.innerHTML = `${value}
-                <input type="checkbox" aria-label="mark item ${idNumber} as completed" >
+                <input type="checkbox" aria-label="mark item as completed">
                 <span class="checkmark"></span>
-                <button class="remove" aria-label="remove item ${idNumber}" ></button>
+                <button class="remove" aria-label="remove item" ></button>
         `;
     todoBox.prepend(newItem);
 
     //add event listeners
-    newItem.querySelector('button').addEventListener("click", function (e) {
-        e.target.parentElement.remove();
-        itemsLeft();
+    newItem.querySelector('button').addEventListener("click", async (e) => {
+        console.log(e.target)
+        // const db = await openDB('todos_db', 1)
+
+        let transaction = db.transaction('todos', 'readwrite');
+        const store = await transaction.objectStore('todos')
+
+        const key = 1
+        await store.delete(key)
+        await transaction.done
+
     });
-    newItem.addEventListener("change", crossThrough);
+    // newItem.addEventListener("change", crossThrough);
 
     //and re-calc the number of todos not crossed off
     itemsLeft();
@@ -155,9 +122,6 @@ let displayNewItem = (data) => {
     //if you're currently viewing only completed todos, hide todo
     newItem.style.display = completedButton.classList.contains('toggle-selected') ? "none" : "block";
 }
-
-
-
 
 
 
