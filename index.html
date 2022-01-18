@@ -23,65 +23,72 @@
 <body>
   <main>
     <div id="main-flex">
+      <!-- Title box -->
       <div id="title-flex">
         <h1>Todo</h1>
-        <img id="color-toggle" src="images/icon-sun.svg" alt=""></img>
+        <button id="color-toggle" aria-label="toggle light/dark theme"></button>
       </div>
-      <div id="input-text-container">
-        <input type="text" id="input-text" placeholder="Create a new todo...">
+      <!-- Input box -->
+      <form id="input-text-form" action="">
+        <input type="text" id="input-text" placeholder="Create a new todo..." aria-label="new todo item">
         <span class="checkmark" id="input-check"></span>
-      </div>
-      </label>
+      </form>
+      <!-- Todos -->
       <div id="todo-list-box">
-        <label class="checkbox-container" id="item1">Complete online Javascript course
-          <input type="checkbox">
+        <!-- <label class="checkbox-container" id="item1">Complete online Javascript course
+          <input type="checkbox" aria-label="mark item 1 as completed" >
           <span class="checkmark"></span>
-          <img class="remove" src="images/icon-cross.svg" alt=""></img>
+          <button class="remove" aria-label="remove item 1" ></button>
         </label>
         <label class="checkbox-container" id="item2">Jog around the park 3x
-          <input type="checkbox">
+          <input type="checkbox" aria-label="mark item 2 as completed" >
           <span class="checkmark"></span>
-          <img class="remove" src="images/icon-cross.svg" alt=""></img>
+          <button class="remove" aria-label="remove item 2" ></button>
         </label>
         <label class="checkbox-container" id="item3">Ten minutes meditation
-          <input type="checkbox">
+          <input type="checkbox" aria-label="mark item 3 as completed" >
           <span class="checkmark"></span>
-          <img class="remove" src="images/icon-cross.svg" alt=""></img>
+          <button class="remove" aria-label="remove item 3" ></button>
         </label>
         <label class="checkbox-container" id="item4">Read for 1 hour
-          <input type="checkbox">
+          <input type="checkbox" aria-label="mark item 4 as completed" >
           <span class="checkmark"></span>
-          <img class="remove" src="images/icon-cross.svg" alt=""></img>
+          <button class="remove" aria-label="remove item 4" ></button>
         </label>
         <label class="checkbox-container" id="item5">Pick up groceries
-          <input type="checkbox">
+          <input type="checkbox" aria-label="mark item 5 as completed" >
           <span class="checkmark"></span>
-          <img class="remove" src="images/icon-cross.svg" alt=""></img>
+          <button class="remove" aria-label="remove item 5" ></button>
         </label>
         <label class="checkbox-container" id="item6">Complete Todo app on Front End Mentor
-          <input type="checkbox">
+          <input type="checkbox" aria-label="mark item 6 as completed" >
           <span class="checkmark"></span>
-          <img class="remove" src="images/icon-cross.svg" alt=""></img>
-        </label>
+          <button class="remove" aria-label="remove item 6" ></button>
+        </label> -->
       </div>
+      <!-- View toggler -->
       <div id="below-todo-box">
         <p class="below-text" id="items-left">6 items left</p>
-        <button class="below-text" id="clear-completed-button"> Clear Completed</button>
+        <button class="below-text" id="clear-completed-button">Clear Completed</button>
       </div>
       <div id="toggle-button-container">
-        <button class="toggle-view-button" value="off">All</button>
-        <button class="toggle-view-button" value="off">Active </button>
-        <button class="toggle-view-button" value="off">Completed</button>
+        <button class="toggle-view-button toggle-unselected" value="off">All</button>
+        <button class="toggle-view-button toggle-unselected" value="off">Active </button>
+        <button class="toggle-view-button toggle-unselected" value="off">Completed</button>
       </div>
+      <!-- Instructions -->
       <p id="instructions">Drag and drop to reorder list</p>
     </div>
   </main>
-
+  <footer class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noreferrer">Frontend
+      Mentor</a>.
+    Coded by <a href="https://github.com/jmgisele" target="_blank" rel="noreferrer">James Gisele</a>.
+  </footer>
 </body>
-<footer class="attribution">
-  Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
-  Coded by <a href="https://github.com/jmgisele">James Gisele</a>.
-</footer>
-<script src="app.js"></script>
+<script type="module">
+  import { openDB, deleteDB } from 'https://unpkg.com/idb?module'
+</script>
+<script src="home.js"></script>
 
 </html>

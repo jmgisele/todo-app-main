@@ -47,13 +47,19 @@ Users should be able to:
 - Flexbox
 - Mobile-first workflow
 - Sortable.js
+- Semantic and Accessible HTML
+- Node.js
+- Express
+- MongoDB
 
 ### What I learned
-First time designing an app where I needed getters to access arrays/nodelists that might change (eg, all the todo list items, since adding/removing items would not automatically update the reference of a const in JS.) The custom CSS hover+checkbox took a long time, but I have a much better handle on pseudoselectors now that I did it!
+I decided to come back to this app after a few months and re-make it with persistent storage! I did my best to make the form accessible via keyboard as well, as I was less experienced when I coded this originally and wasn't aware of best practices. Storage is handled client-side using the IDB. This is my first project using client-side storage other than basic cookies/session, so it was a good easy way to test stuff out.
+
 ### Useful resources
 
 - [abhik-b's solution](https://github.com/abhik-b/frontend-challenge-3) - was very helpful in figuring out Sortable.js, which I'd never used before!
 - [Here is SortableJS](https://sortablejs.github.io/Sortable/), which is what I used to create the drag-and-drop functionality.
+- [The MDN Client-side storage guide](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage) conveniently used an example of a todo app.
 
 ## Author
 
