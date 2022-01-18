@@ -7,7 +7,7 @@ body {
     --top-image: url("./images/bg-mobile-dark.jpg");
     --toggle-button: url("./images/icon-sun.svg");
     --background-todo: hsl(235, 24%, 19%);
-    --selected-toggle:  hsl(220, 98%, 61%);
+    --selected-toggle: hsl(220, 98%, 61%);
     --border-text: hsl(233, 14%, 35%);
 }
 
@@ -160,8 +160,8 @@ h1 {
     transform: translateY(-50%);
 }
 
-.checkbox-container input:focus ~ .checkmark {
-    border:2px solid var(--foreground);
+.checkbox-container input:focus~.checkmark {
+    border: 2px solid var(--foreground);
 }
 
 /*gradient on hover */
@@ -186,7 +186,7 @@ h1 {
 
 
 /* show on hover */
-.checkbox-container:hover input:not(:checked)~.checkmark::before{
+.checkbox-container:hover input:not(:checked)~.checkmark::before {
     display: block;
 }
 
@@ -194,12 +194,12 @@ h1 {
 /* show checkmark when checked */
 .checkbox-container input:checked~.checkmark:after {
     display: block;
-    
+
 }
 
 /* and add border when focused */
-.checkbox-container input:checked:focus ~ .checkmark {
-    border:2px solid var(--foreground);
+.checkbox-container input:checked:focus~.checkmark {
+    border: 2px solid var(--foreground);
 }
 
 
@@ -250,6 +250,19 @@ h1 {
     background-size: contain;
 
 }
+
+/* crossout styling */
+
+.crossed-out {
+    text-decoration: "line-through";
+    color: var(--background-text);
+}
+
+.not-crossed {
+    text-decoration: none;
+    color: var(--foreground);
+}
+
 
 /* Bottom Controls */
 #below-todo-box {
@@ -316,7 +329,7 @@ h1 {
         top: 5px;
 
     }
-    
+
 }
 
 
@@ -346,7 +359,7 @@ h1 {
         top: 6px;
 
     }
-    
+
 
     #input-text-form {
         margin-bottom: 1.5rem;

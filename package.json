@@ -19,14 +19,8 @@
   },
   "homepage": "https://github.com/jmgisele/todo-app-main#readme",
   "dependencies": {
-    "connect-mongo": "^4.6.0",
-    "dotenv": "^14.1.0",
     "express": "^4.17.2",
-    "express-mongo-sanitize": "^2.2.0",
-    "express-session": "^1.17.2",
     "helmet": "^5.0.1",
-    "method-override": "^3.0.0",
-    "mongoose": "^6.1.7",
     "nodemon": "^2.0.15",
     "path": "^0.12.7",
     "sanitize-html": "^2.6.1"

@@ -15,6 +15,7 @@ const submitForm = document.querySelector("#input-text-form")
 
 //for local storage
 let db;
+let id = 0 //for keeping track of comments by id easily
 
 //////////On Load Events////////
 
@@ -40,13 +41,15 @@ let createDB = async () => {
 
     db = await idb.openDB(dbName, version, {
         upgrade(db, oldVersion, newVersion, transaction) {
-            const store = db.createObjectStore(storeName, { autoIncrement: true })
+            const store = db.createObjectStore(storeName)
         }
     });
 
     //putting initial values in if none are there on load as placeholder
     const initial_items = await db.transaction(storeName).objectStore(storeName).getAll();
+    const items = await db.transaction(storeName).objectStore(storeName).getAllKeys()
     console.log(initial_items)
+    console.log(items)
     if (initial_items.length === 0) { //initial seed
         let initial_todos = [
             "Complete online Javascript course",
@@ -59,10 +62,12 @@ let createDB = async () => {
         for (let entry of initial_todos) {
             let transaction = db.transaction('todos', 'readwrite')
             let store = await transaction.objectStore('todos')
-            let newEntry = { body: entry, isChecked: false };
-            let placed_val = await store.put(newEntry);
-
+            let newEntry = { id: id, body: entry, isChecked: false };
+            let placed_val = await store.put(newEntry, id);
             await transaction.done
+            displayNewItem(newEntry)
+            id++;
+            console.log(id)
         }
     } else { //refresh!
         for (let item of initial_items) {
@@ -74,47 +79,33 @@ let createDB = async () => {
 //adds todo to database
 let addData = async (e) => {
     e.preventDefault(); //no http thx!
-    let newItem = { body: todoInput.value, isChecked: false };
-
+    let newItem = { id: id, body: todoInput.value, isChecked: false };
     let transaction = db.transaction('todos', 'readwrite');
     let store = await transaction.objectStore('todos');
-
-    const placed_val = await store.put(newItem);
+    const placed_val = await store.put(newItem, id);
     await transaction.done;
     displayNewItem(newItem);
     e.originalTarget[0].value = ""
-}
-
-//deletes item from database and removes it from the DOM 
-function removeData(e) {
+    id++;
+    console.log(id)
 }
 
 //displays new todo at top of list
 let displayNewItem = (data) => {
     let value = data.body;
+    let thisID = data.id
     const newItem = document.createElement("label");
     newItem.classList.add("checkbox-container");
     newItem.innerHTML = `${value}
-                <input type="checkbox" aria-label="mark item as completed">
+                <input type="checkbox" aria-label="mark item as completed" id="item${thisID}">
                 <span class="checkmark"></span>
-                <button class="remove" aria-label="remove item" ></button>
+                <button class="remove" aria-label="remove item" id="removebtn${thisID}" ></button>
         `;
     todoBox.prepend(newItem);
 
     //add event listeners
-    newItem.querySelector('button').addEventListener("click", async (e) => {
-        console.log(e.target)
-        // const db = await openDB('todos_db', 1)
-
-        let transaction = db.transaction('todos', 'readwrite');
-        const store = await transaction.objectStore('todos')
-
-        const key = 1
-        await store.delete(key)
-        await transaction.done
-
-    });
-    // newItem.addEventListener("change", crossThrough);
+    newItem.querySelector('button').addEventListener("click", removeData);
+    newItem.addEventListener("change", crossThrough);
 
     //and re-calc the number of todos not crossed off
     itemsLeft();
@@ -124,25 +115,18 @@ let displayNewItem = (data) => {
 }
 
 
+//deletes item from database and removes it from the DOM 
+let removeData = async (e) => {
+    let key = parseInt(e.target.id.replace('removebtn', ''));
+    console.log(key)
+    const tx = await db.transaction('todos', 'readwrite')
+    const store = await tx.objectStore('todos')
 
+    await store.delete(key)
+    e.target.parentElement.remove()
+    itemsLeft()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 // display items left in control box
 let itemsLeft = () => {
@@ -151,20 +135,29 @@ let itemsLeft = () => {
 }
 
 // when checkbox is checked, crossthrough text and change its color
-let crossThrough = (e) => {
-    input = e.target
-    if (input.checked) {
-        input.parentElement.style.textDecoration = "line-through";
-        input.parentElement.style.color = "hsl(234, 11%, 52%)";
-        itemsLeft();
-    } else { //it's unchecked
-        input.parentElement.style.textDecoration = "none";
-        input.parentElement.style.color = "var(--foreground)";
-        itemsLeft();
-    }
+//and update database to reflect
+let crossThrough = async (e) => {
+    let key = parseInt(e.target.id.replace('item', ''));
+
+    const tx = await db.transaction('todos', 'readwrite')
+    const store = await tx.objectStore('todos')
+    const thisEntry = await store.get(key);
+    await store.put({ id: key, body: thisEntry.body, isChecked: !thisEntry.isChecked }, key)
+    //styling
+    console.log(e.target.parentElement)
+    crossStyling(e.target.parentElement)
 
 }
 
+
+let crossStyling = (input) => {
+    if (input.checked) {
+        input.classList.add("crossed-out")
+    } else { //it's unchecked
+        input.classList.add("not-crossed")
+    }
+    itemsLeft();
+}
 
 
 ///////// Bottom Control Box Functionality /////////
