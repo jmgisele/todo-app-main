@@ -254,7 +254,7 @@ h1 {
 /* crossout styling */
 
 .crossed-out {
-    text-decoration: "line-through";
+    text-decoration: line-through;
     color: var(--background-text);
 }
 

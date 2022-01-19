@@ -1,12 +1,10 @@
 ////////////Global vars /////////////
 
-//functions so it re-counts every time 
+//"getter" functions so it re-counts from the DOM every time 
 //since new todos can be added
-let todoContainers = () => document.querySelectorAll(".checkbox-container");
 let todoAllInputs = () => document.querySelectorAll(".checkbox-container input");
 let todoCheckedInputs = () => document.querySelectorAll(".checkbox-container input:checked");
 let todoUncheckedInputs = () => document.querySelectorAll(".checkbox-container input:not(:checked)");
-let removeButtonsList = () => document.querySelectorAll(".remove");
 
 //these don't change, no need to recompute
 const todoInput = document.querySelector("#input-text");
@@ -15,16 +13,16 @@ const submitForm = document.querySelector("#input-text-form")
 
 //for local storage
 let db;
-let id = 0 //for keeping track of comments by id easily
+let id; //for keeping track of todos by id/key more easily
 
 //////////On Load Events////////
 
 window.onload = () => {
-    //calcs items left unchecked
-    itemsLeft();
-
     //create and seed database
     createDB();
+
+    //calcs items left unchecked
+    itemsLeft();
 
     //when form is submitted, content is added to DB
     submitForm.onsubmit = addData;
@@ -33,23 +31,21 @@ window.onload = () => {
 
 
 //////////// Callbacks ////////////
+//creating DB
 let createDB = async () => {
-    //creating DB
     const dbName = 'todos_db';
-    const storeName = 'todos';
     const version = 1;
 
     db = await idb.openDB(dbName, version, {
         upgrade(db, oldVersion, newVersion, transaction) {
-            const store = db.createObjectStore(storeName)
+            const store = db.createObjectStore('todos')
         }
     });
 
     //putting initial values in if none are there on load as placeholder
-    const initial_items = await db.transaction(storeName).objectStore(storeName).getAll();
-    const items = await db.transaction(storeName).objectStore(storeName).getAllKeys()
-    console.log(initial_items)
-    console.log(items)
+    const initial_items = await db.transaction('todos').objectStore('todos').getAll();
+    const initial_keys = await db.transaction('todos').objectStore('todos').getAllKeys()
+    id = initial_keys.length > 0 ? Math.max(...initial_keys, 1) + 1 : 1; //making sure we don't duplicate ids
     if (initial_items.length === 0) { //initial seed
         let initial_todos = [
             "Complete online Javascript course",
@@ -63,11 +59,11 @@ let createDB = async () => {
             let transaction = db.transaction('todos', 'readwrite')
             let store = await transaction.objectStore('todos')
             let newEntry = { id: id, body: entry, isChecked: false };
+            if (entry === "Complete Todo app on Front End Mentor") newEntry = { id: id, body: entry, isChecked: true };
             let placed_val = await store.put(newEntry, id);
             await transaction.done
             displayNewItem(newEntry)
             id++;
-            console.log(id)
         }
     } else { //refresh!
         for (let item of initial_items) {
@@ -80,14 +76,15 @@ let createDB = async () => {
 let addData = async (e) => {
     e.preventDefault(); //no http thx!
     let newItem = { id: id, body: todoInput.value, isChecked: false };
+
     let transaction = db.transaction('todos', 'readwrite');
     let store = await transaction.objectStore('todos');
+    
     const placed_val = await store.put(newItem, id);
     await transaction.done;
     displayNewItem(newItem);
-    e.originalTarget[0].value = ""
+    e.srcElement[0].value = ""
     id++;
-    console.log(id)
 }
 
 //displays new todo at top of list
@@ -103,6 +100,7 @@ let displayNewItem = (data) => {
         `;
     todoBox.prepend(newItem);
 
+
     //add event listeners
     newItem.querySelector('button').addEventListener("click", removeData);
     newItem.addEventListener("change", crossThrough);
@@ -112,21 +110,33 @@ let displayNewItem = (data) => {
 
     //if you're currently viewing only completed todos, hide todo
     newItem.style.display = completedButton.classList.contains('toggle-selected') ? "none" : "block";
+
+    // and if it's checked (on a reload), display that 
+    if (data.isChecked) {
+        document.querySelector(`#item${thisID}`).checked = true;
+        crossStyling(document.querySelector(`#item${thisID}`))
+    }
 }
 
 
 //deletes item from database and removes it from the DOM 
-let removeData = async (e) => {
-    let key = parseInt(e.target.id.replace('removebtn', ''));
-    console.log(key)
+let removeData = async (param) => {
+    //if the param is an event (remove button) vs when the param is an input (clear completed button)
+    let key = param.target ? parseInt(param.target.id.replace('removebtn', '')) : parseInt(param.id.replace('item', ''));
+
     const tx = await db.transaction('todos', 'readwrite')
     const store = await tx.objectStore('todos')
 
     await store.delete(key)
-    e.target.parentElement.remove()
-    itemsLeft()
+    await tx.done
 
+    param.target ? param.target.parentElement.remove() : param.parentElement.remove()
+    itemsLeft()
 }
+
+
+
+
 
 // display items left in control box
 let itemsLeft = () => {
@@ -134,27 +144,30 @@ let itemsLeft = () => {
     itemsLeftText.innerText = `${todoUncheckedInputs().length} items left`
 }
 
-// when checkbox is checked, crossthrough text and change its color
-//and update database to reflect
+// when checkbox is checked, update database to reflect + style
 let crossThrough = async (e) => {
     let key = parseInt(e.target.id.replace('item', ''));
 
     const tx = await db.transaction('todos', 'readwrite')
     const store = await tx.objectStore('todos')
+
     const thisEntry = await store.get(key);
     await store.put({ id: key, body: thisEntry.body, isChecked: !thisEntry.isChecked }, key)
-    //styling
-    console.log(e.target.parentElement)
-    crossStyling(e.target.parentElement)
+    await tx.done
 
+    //styling
+    crossStyling(e.target)
 }
 
 
 let crossStyling = (input) => {
     if (input.checked) {
-        input.classList.add("crossed-out")
+        input.parentElement.classList.add("crossed-out")
+        input.parentElement.classList.remove("not-crossed")
     } else { //it's unchecked
-        input.classList.add("not-crossed")
+        input.parentElement.classList.add("not-crossed")
+        input.parentElement.classList.remove("crossed-out")
+
     }
     itemsLeft();
 }
@@ -164,9 +177,7 @@ let crossStyling = (input) => {
 
 // when clear button is pressed, clear completed
 document.querySelector("#clear-completed-button").addEventListener("click", () => {
-    todoCheckedInputs().forEach(input => {
-        input.parentElement.remove();
-    })
+    todoCheckedInputs().forEach(input =>  removeData(input))
     itemsLeft(); //shouldn't change - fallback
 })
 
