@@ -60,7 +60,7 @@ I ended up using the promised-IDB library by Jake Archibald ([link](https://gith
 
 Some bugs I'm aware of but didn't feel like ironing out:
 - Order of the todos doesn't persist on re-load. This could be implemented using a property on the IDB entry for each todo that kept track of its place in the page, maybe using on drop handlers thru sortable.
--The way I handle keys for IDB vs ids for the DOM is...creative. I'm sure IDB has a better way of keeping track of things using auto-increment but after messing around with IDB for a day I decided I'd rather simply design an id that would assign keys uniquely and be done with it. If this were a production app whose code would be handed down for years I'd find a way to implement it more transparently!
+- The way I handle keys for IDB vs ids for the DOM is...creative. I'm sure IDB has a better way of keeping track of things using auto-increment but after messing around with IDB for a day I decided I'd rather simply design an id that would assign keys uniquely and be done with it. If this were a production app whose code would be handed down for years I'd find a way to implement it more transparently!
 
 ### Useful resources
 
